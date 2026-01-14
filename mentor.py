@@ -1,144 +1,172 @@
-import os
-import re
-
+# mentor.py
 import streamlit as st
 from google import genai
+from auth import create_user_table, register_user, login_user
+from pdf_report import generate_pdf
+import matplotlib.pyplot as plt
+import os
 
-# --- Model ve client ---
-MODEL_NAME = "models/gemini-2.5-flash"
+# --------------------
+# İlk kurulum
+# --------------------
+create_user_table()
 
-# API key'i önce Streamlit Secrets'tan, yoksa ortam değişkeninden al
-api_key = st.secrets.get("GOOGLE_API_KEY") if "GOOGLE_API_KEY" in st.secrets else os.getenv("GOOGLE_API_KEY")
+st.set_page_config(page_title="✨ Lümen-AI", page_icon="✨", layout="wide")
 
-if not api_key:
-    st.error("GOOGLE_API_KEY bulunamadı. Streamlit Secrets veya ortam değişkeni olarak ekleyin.")
+# --------------------
+# Session kontrolü
+# --------------------
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
+
+# --------------------
+# GİRİŞ / KAYIT
+# --------------------
+if not st.session_state.logged_in:
+    st.title("✨ Lümen-AI Giriş")
+
+    tab1, tab2 = st.tabs(["Giriş Yap", "Kayıt Ol"])
+
+    with tab1:
+        username = st.text_input("Kullanıcı Adı")
+        password = st.text_input("Şifre", type="password")
+        if st.button("Giriş"):
+            if login_user(username, password):
+                st.session_state.logged_in = True
+                st.session_state.user = username
+                st.success("Giriş başarılı!")
+                st.rerun()
+            else:
+                st.error("Hatalı kullanıcı adı veya şifre")
+
+    with tab2:
+        new_user = st.text_input("Yeni Kullanıcı Adı")
+        new_pass = st.text_input("Yeni Şifre", type="password")
+        if st.button("Kayıt Ol"):
+            if register_user(new_user, new_pass):
+                st.success("Kayıt başarılı! Giriş yapabilirsiniz.")
+            else:
+                st.error("Bu kullanıcı adı zaten var")
+
     st.stop()
 
-client = genai.Client(api_key=api_key)
+# --------------------
+# GİRİŞ SONRASI SIDE BAR
+# --------------------
+if "user" in st.session_state:
+    st.sidebar.success(f"👤 Giriş yapan: {st.session_state.user}")
+    if st.sidebar.button("Çıkış Yap"):
+        st.session_state.logged_in = False
+        del st.session_state.user  # Kullanıcı bilgisini temizle
+        st.rerun()
 
-st.set_page_config(
-    page_title="Lümen-AI ✨",
-    page_icon="✨",
-    layout="wide"
-)
+# --------------------
+# Gemini Client
+# --------------------
+client = genai.Client()
+MODEL_NAME = "models/gemini-2.5-flash"
 
-# --- Modern gri tonlar CSS ---
+# --------------------
+# CSS ( gri, beyaz yazı)
+# --------------------
 st.markdown("""
 <style>
-/* Genel arka plan ve yazılar */
-body, .stApp {
-    background-color: #2E2E2E;  /* koyu gri */
-    color: #FFFFFF;              /* beyaz yazı */
-    font-family: "Segoe UI", sans-serif;
-}
-
-/* Header ve başlıklar */
-h1, h2, h3, h4 {
-    color: #FFFFFF;
-}
-
-/* Textarea ve input kutusu */
-.stTextArea textarea {
-    background-color: #3C3C3C;  /* orta gri */
-    color: #FFFFFF;
-    border: 1px solid #555555;
-    border-radius: 6px;
-    padding: 8px;
-}
-
-/* Button stil */
-.stButton button {
-    background-color: #5A5A5A;  /* gri ton */
-    color: #FFFFFF;
-    font-weight: bold;
-    border-radius: 6px;
-    padding: 6px 12px;
-}
-.stButton button:hover {
-    background-color: #777777;
-}
-
-/* Markdown / Kod kutusu */
-.stMarkdown, .stCodeBlock {
-    background-color: #3C3C3C;
-    padding: 12px;
-    border-radius: 8px;
-    border: 1px solid #555555;
-    color: #FFFFFF;
-}
+body { background-color: #2f2f2f; color: #ffffff; }
+h1,h2,h3,h4 { color: #ffffff; }
+.stTextArea textarea { background-color: #3c3c3c; color: white; }
+.stButton>button { background-color: #5a5a5a; color: white; border-radius: 8px; font-weight: bold; }
+.stButton>button:hover { background-color: #777777; }
+.stSelectbox select { background-color: #3c3c3c; color: white; }
 </style>
 """, unsafe_allow_html=True)
 
-# --- Header ---
+# --------------------
+# HEADER
+# --------------------
 st.header("✨ Lümen-AI")
-st.write("Kodunu paylaş, yapay zeka analiz etsin ve kısa, net öneriler sunsun.")
+st.write("Kodunu paylaş, yapay zekâ analiz etsin 🌟")
 
-# --- Mentör profili ve öneri modu ---
-mentor_level = st.selectbox(
-    "Mentör Profili:",
-    ["Junior", "Senior", "Security Expert", "Performance Guru"]
-)
-tip_mode = st.radio(
-    "Öneri Modu:",
-    ["Kısa ipucu", "Detaylı açıklama"]
-)
+# --------------------
+# Junior / Senior
+# --------------------
+st.subheader("Mentör Seviyesi")
+col_role1, col_role2 = st.columns(2)
+junior = col_role1.button("Junior")
+senior = col_role2.button("Senior")
+role = "Junior" if junior else "Senior" if senior else "Junior"
 
-# --- Layout ---
+# --------------------
+# Çoklu Dil Seçimi
+# --------------------
+language = st.selectbox("Kod Dili Seçin:", ["Python", "JavaScript", "Java", "C#"])
+
+# --------------------
+# Kod Alanı
+# --------------------
 col1, col2 = st.columns(2)
-
 with col1:
-    code_input = st.text_area(
-        "Analiz edilecek kodu buraya ekleyin:",
-        height=400
-    )
-    analyze_button = st.button("🔍 Analiz Et ✨")
+    code_input = st.text_area("Analiz edilecek kodu buraya yapıştır:", height=400)
+    analyze_button = st.button("🔍 Analiz Et")
 
 with col2:
     st.subheader("📝 Mentorun Analizi")
-
     if analyze_button:
         if code_input.strip():
             with st.spinner("Kodu inceliyorum, lütfen bekleyin..."):
                 try:
-                    # --- Kod dili algılama ---
-                    if re.search(r"\bdef\b|\bimport\b", code_input):
-                        code_lang = "Python"
-                    elif re.search(r"\bfunction\b|console\.log", code_input):
-                        code_lang = "JavaScript"
-                    elif re.search(r"\bpublic class\b|\bSystem\.out\.println", code_input):
-                        code_lang = "Java"
-                    elif re.search(r"\busing\b|Console\.WriteLine", code_input):
-                        code_lang = "C#"
-                    else:
-                        code_lang = "Bilinmiyor"
-
-                    # --- Prompt ---
+                    # --------------------
+                    # AI Prompt
+                    # --------------------
                     prompt = f"""
-Sen tecrübeli bir yazılım mentörüsün ({mentor_level}) ve öneri modu {tip_mode}.
+Sen tecrübeli bir yazılım mentörüsün. Rol: {role}, Dil: {language}
 
-Aşağıdaki {code_lang} kodunu analiz et:
-- Syntax ve mantık hatalarını tespit et
-- Performans önerileri ver
-- Güvenlik açıklarını kontrol et (SQL injection, XSS)
-- Kod kalite puanı ver (1-10)
-- Kısa veya detaylı açıklama yap (mod {tip_mode})
-- Gerekirse refactor edilmiş örnek kod ver
-Tüm açıklamalar Türkçe olsun
-
+Aşağıdaki kodu:
+1. Hatalar açısından incele
+2. Daha temiz ve doğru yazım öner
+3. Gerekirse refactor edilmiş örnek ver
+4.sorulan sorulara mantıklı ve nazik yanıtlar ver
+5. Kodun kalitesini 1-10 arası puanla
+6.Hataları kategoriye ayır: Syntax, Mantık, Performans, Güvenlik
+7. Açıklamaları Türkçe, net ve kısa yap
+8. Eğer rol Junior ise motivasyon ver: "Bugün hata yapan X Junior’dan birisin, bu çok normal"
+9. Otomatik test önerileri üret
+10. Kod performans ve güvenlik analizi yap
 Kod:
 {code_input}
 """
+                    response = client.models.generate_content(model=MODEL_NAME, contents=prompt)
+                    analysis_text = response.text
 
-                    # --- Model çağrısı ---
-                    response = client.models.generate_content(
-                        model=MODEL_NAME,
-                        contents=prompt
-                    )
+                    # --------------------
+                    # Analizi Göster
+                    # --------------------
+                    st.markdown(analysis_text)
 
-                    # --- Sonuçları göster ---
-                    st.markdown("**📌 Analiz ve Öneriler:**")
-                    st.code(response.text, language=code_lang.lower() if code_lang != "Bilinmiyor" else None)
+                    # --------------------
+                    # Otomatik Test Grafiği
+                    # --------------------
+                    fig, ax = plt.subplots(figsize=(5,3))
+                    categories = ["Syntax", "Mantık", "Performans", "Güvenlik"]
+                    counts = [analysis_text.count(cat) for cat in categories]
+                    ax.bar(categories, counts, color="#1f77b4")
+                    ax.set_title("Hata Kategorileri Görselleştirmesi")
+                    st.pyplot(fig)
 
+                    # --------------------
+                    # PDF Rapor
+                    # --------------------
+                    pdf_path = generate_pdf(username=st.session_state.user, role=role, analysis_text=analysis_text)
+                    if os.path.exists(pdf_path):
+                        with open(pdf_path, "rb") as pdf_file:
+                            st.download_button(
+                                label="📄 PDF Raporu İndir",
+                                data=pdf_file,
+                                file_name=os.path.basename(pdf_path),
+                                mime="application/pdf"
+                            )
+
+                except KeyboardInterrupt:
+                    st.warning("⚠️ İşlem kullanıcı tarafından iptal edildi.")
                 except Exception as e:
                     st.error(f"Bir hata oluştu: {e}")
         else:
