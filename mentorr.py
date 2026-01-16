@@ -1,8 +1,8 @@
 #07.11.25 
 # mentor.py 
 # Lümen-AI / tek dosya
-# temel: profil + takip + DM + bildirim + grup chat + analiz + geçmiş + eşleşme
-# bunlar bana not kafam alak bulak olmasın diye kimse kusura bakmasın (kim bakıcak ki zaten :D) odaklan gamze
+# temel: profil + takip + DM + bildirim + grup chat + analiz + geçmiş + eşleşme 
+
 
 import os
 import ast
@@ -32,7 +32,7 @@ UI = {
     "empty_code": "Analiz için bir kod paylaşman gerekiyor.",
     "pdf_fail": "PDF raporu şu an üretilemedi. (pdf_report.py tarafını kontrol etmek gerekebilir.)",
     "msg_sent": "Mesaj gönderildi.",
-    "msg_empty": "Mesaj boş olmasın.",
+    "msg_empty": "Mesaj boş olmamalı.",
     "room_joined": "Gruba katıldın.",
     "room_created": "Grup oluşturuldu.",
     "saved": "Kaydedildi.",
