@@ -1,7 +1,9 @@
+#07.11.25 
+
 # Bu versiyonda daha kompleks bir mentorluk algoritması deniyorum. 
 #Gece yarısı yapılan son güncellemelerle birlikte bazı çakışmalar oluştu.
 #Bu kısımları, projenin potansiyelini ve hedeflediğim derinliği görmeniz adına silmeden bırakıyorum. 
-#07.11.25 
+
 import os
 import ast
 import time
