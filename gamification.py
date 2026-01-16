@@ -3,7 +3,7 @@
 import json
 import os
 from datetime import datetime
-
+#henüz çok temel ve basit bir yapıda güncellenmesi lazım daha fazla tecrübe edinmem lazım 
 # Kullanıcı puan ve rozet verilerini saklama
 # --------------------
 DATA_FILE = "gamification_data.json"
