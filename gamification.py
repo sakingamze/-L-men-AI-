@@ -4,7 +4,6 @@ import json
 import os
 from datetime import datetime
 
-# --------------------
 # Kullanıcı puan ve rozet verilerini saklama
 # --------------------
 DATA_FILE = "gamification_data.json"
@@ -37,7 +36,7 @@ def add_points(username, role, points):
 
 # --------------------
 # Rozet kazanma
-# --------------------
+
 def award_badge(username, badge_name):
     data = load_data()
     if username not in data:
@@ -53,13 +52,13 @@ def award_badge(username, badge_name):
 # --------------------
 def get_motivation(username, role, points_earned):
     messages_junior = [
-        f"Hey {username}! Bugün hata yapan {points_earned} Junior’dan birisin, bu çok normal 💪",
-        "Her hata bir öğrenme fırsatıdır! Devam et 🚀",
-        "Kod yolculuğunda adımlarını güçlendirdin! 🌟"
+        f"Hey {username}! Bugün hata yapan {points_earned} Junior’dan birisin, bu çok normal devam et",
+        "Her hata bir öğrenme fırsatıdır ",
+        "Kod yolculuğunda adımlarını güçlendirdin! "
     ]
     messages_senior = [
-        f"{username}, profesyonel bir Senior olarak {points_earned} puan kazandın. Harika iş! 🔥",
-        "Kodunu optimize etmeye devam et, uzmanlık yolunda ilerliyorsun! 💼"
+        f"{username}, profesyonel bir Senior olarak {points_earned} puan kazandın. Harika iş! ",
+        "Kodunu optimize etmeye devam et, uzmanlık yolunda ilerliyorsun! "
     ]
     import random
     if role.lower() == "junior":
