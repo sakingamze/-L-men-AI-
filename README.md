@@ -1,43 +1,27 @@
-# ✨ Lümen-AI
- Lümen-AI, geliştiricilerin kodlarını yapay zekâ ile analiz edebileceği bir mentörlük uygulamasıdır. Kullanıcılar giriş yaparak veya kayıt olarak sisteme dahil olur, kodlarını paylaşır ve Junior ya da Senior seviyesinde mentörlük alabilir.
-Uygulama Python, JavaScript, Java ve C# dillerinde yazılmış kodları inceleyebilir. Yapay zekâ kodu hatalar açısından değerlendirir, daha temiz yazım önerileri sunar, gerekirse refactor edilmiş örnekler üretir ve kodun kalitesini puanlar. Ayrıca hataları Syntax, Mantık, Performans ve Güvenlik kategorilerine ayırarak görsel bir grafik oluşturur. Junior modunda motivasyon vererek öğrenme sürecini desteklerken, Senior modunda daha derinlemesine analizler sağlar.
-Arayüz koyu tema üzerine kurulmuştur; kullanıcı dostu tasarımıyla rahat bir deneyim sunar. Kod analizi tamamlandığında yapay zekâ tarafından üretilen açıklamalar gösterilir, hata kategorileri grafik üzerinde görselleştirilir ve tüm sonuçlar PDF raporu olarak indirilebilir.
-Kurulum için repoyu klonlayıp gerekli paketleri yüklemek yeterlidir. Ardından streamlit run mentor.py komutu ile uygulama başlatılır. Çalıştırıldığında kullanıcı giriş ekranı açılır, kod dili seçilerek analiz süreci başlatılabilir.
-Lümen-AI, yazılım geliştiricilerin hatalardan ders çıkarmasını, daha güvenli ve performanslı kodlar yazmasını kolaylaştırır. Kodunu paylaş, yapay zekâ analiz etsin
- 
-
-## 🚀 Özellikler
-
-- 🔐 **Kullanıcı Girişi ve Kayıt**: SQLite tabanlı kullanıcı yönetimi.
-- 🤖 **AI Kod Analizi**: Google Gemini modeli ile kod analizi.
-- 🧑‍🏫 **Mentör Seviyesi**: Junior veya Senior modunda farklı geri bildirimler.
-- 🌍 **Çoklu Dil Desteği**: Python, JavaScript, Java, C# kod analizi.
-- 📊 **Hata Kategorileri Görselleştirmesi**: Syntax, Mantık, Performans, Güvenlik hatalarının grafiksel gösterimi.
-- 📄 **PDF Rapor Çıktısı**: Analiz sonuçlarını PDF olarak indirme.
-
-🖥️ Kullanım- Uygulama açıldığında giriş yapın veya yeni kullanıcı oluşturun.
-- Kod dilini seçin (Python, JavaScript, Java, C#).
-- Kodunuzu metin alanına yapıştırın.
-- Junior veya Senior mentör modunu seçin.
-- "🔍 Analiz Et" butonuna basın.
-- Yapay zekâ analizi, hata kategorileri grafiği ve PDF raporu elde edin.
-
-
-📊 Analiz İçeriği- Kod hataları (Syntax, Mantık, Performans, Güvenlik)
-- Refactor önerileri
-- Kod kalitesi puanı (1-10)
-- Otomatik test önerileri
-- Performans ve güvenlik analizi
-
-📄 Örnek Çıktı- Yapay zekâ analizi (Markdown formatında)
-- Hata kategorileri grafiği
-- PDF raporu indirilebilir dosya
-
-
- Repoyu klonlayın:
-   ```bash
-   git clone https://github.com/kullanici/lumen-ai.git
-   cd lumen-ai
-
-
-
+​✨ Lümen-AI: Akıllı Kod Mentörü ve Yazılımcı Sosyal Ağı
+​Lümen-AI, sadece kod analizi yapan bir araç değil; yazılımcıların gelişim süreçlerini insani bir dokunuşla destekleyen, topluluk odaklı bir Mentörlük ve İşbirliği Platformudur. Yapay zekanın teknik gücünü, yazılımcıların birbirine destek olduğu sosyal bir ekosistemle birleştirerek "yalnız kodlama" deneyimine son vermeyi amaçlar.
+​
+Öne Çıkan Özellikler
+​Çok Katmanlı Kod Analizi: * Lokal Analizör: Python kodları için AST (Abstract Syntax Tree) kullanarak güvenlik, performans ve mantık hatalarını anlık tespit eder.
+​AI Mentörlük (Gemini 2.5 Flash): Seviyeye (Junior/Senior) ve seçilen üsluba (Samimi, Profesyonel, Öğretmen vb.) göre kişiselleştirilmiş geri bildirimler sunar.
+​Akıllı Eşleşme Algoritması (Smart Match): * Benzer kod hatalarına veya teknik zorluklara takılan yazılımcıları otomatik olarak eşleştirir.
+​Solo ve Grup Modları: İster bire bir sohbet, ister otomatik oluşturulan çalışma gruplarıyla sorunları birlikte çözme imkanı sağlar.
+​Sosyal Ekosistem: Profil oluşturma, takip sistemi, gerçek zamanlı oda sohbetleri ve özel mesajlaşma (DM) özellikleri.
+​Raporlama: Analiz sonuçlarını profesyonel PDF formatında indirip saklama imkanı.
+​
+teknik Mimari
+​Platform, modern yazılım prensipleri ve kullanıcı deneyimi (UX) odaklı bir teknoloji yığını üzerine inşa edilmiştir:
+​Frontend: Streamlit (Göz yormayan, soft temalı özel CSS entegrasyonu ile).
+​Backend: Python 3.x.
+​Veritabanı: SQLite (İlişkisel veri yönetimi: Profil, Takip, Mesaj, Analiz ve Grup tabloları).
+​Yapay Zeka: Google GenAI (Gemini API).
+​Güvenlik: SHA-256 şifreleme ve güvenli oturum yönetimi.
+​
+Tasarım Felsefesi
+​Lümen-AI, yazılımcıların uzun çalışma saatlerinde odaklarını koruyabilmeleri için Soft (Bej), İndigo ve Hardal renk paletini temel alan, minimalist ve göz dostu bir tema ile tasarlanmıştır. Karmaşık teknik verileri, matplotlib entegrasyonu ile görselleştirerek anlaşılırlığı artırır.
+​
+Gelecek Vizyonu (Experimental v2)
+​Projenin geliştirme aşamasındaki versiyonu şunlara odaklanmaktadır:
+​Kod bloklarını otomatik refactor eden derin öğrenme modelleri.
+​Sesli mentörlük asistanı entegrasyonu.
+​GitHub API entegrasyonu ile doğrudan repolar üzerinden analiz.
