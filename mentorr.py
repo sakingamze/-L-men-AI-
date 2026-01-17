@@ -400,7 +400,8 @@ def following_of(user: str, limit: int = 50):
     return rows
 
 
-# ---- DM
+# ---- DM eee sharlock sen şimdi naneyi yemedin mi (dm ve profil için ek güvenlik zımbırtıları bul kapımızı kitle hırsızın başını derde sokma Gamze)
+ 
 def send_dm(sender: str, receiver: str, body: str):
     receiver = (receiver or "").strip()
     body = safe_text(body, 4000)
@@ -567,7 +568,7 @@ def join_room(room_id: int, username: str):
 
 
 def list_my_rooms(username: str, limit: int = 50):
-    con = conn()
+    Lücon = conn()
     cur = con.cursor()
     cur.execute(
         """
