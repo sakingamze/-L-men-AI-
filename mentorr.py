@@ -1,7 +1,7 @@
 #07.11.25 
 # mentor.py 
 # Lümen-AI / tek dosya
-# temel: profil + takip + DM + bildirim + grup chat + analiz + geçmiş + eşleşme bunlar kendime not sonra silicem zaten kimse görmüyor eğleniyorum :d
+# temel: profil + takip + DM + bildirim + grup chat + analiz + geçmiş + eşleşme 
 
 
 import os
@@ -22,7 +22,7 @@ from pdf_report import generate_pdf
 
 
 # --------------------
-# UI metinleri (tek çizgi) # şuraları da düzenle daha samimi bir şeyler bul millet zaten gergin 
+# UI metinleri (tek çizgi)  
 # --------------
 UI = {
     "login_ok": "Giriş başarılı. Hoş geldin, {user}.",
@@ -400,7 +400,7 @@ def following_of(user: str, limit: int = 50):
     return rows
 
 
-# ---- DM eee sharlock sen şimdi naneyi yemedin mi (dm ve profil için ek güvenlik zımbırtıları bul kapımızı kitle hırsızın başını derde sokma Gamze)
+# ---- DM
  
 def send_dm(sender: str, receiver: str, body: str):
     receiver = (receiver or "").strip()
