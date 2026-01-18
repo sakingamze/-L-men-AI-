@@ -1,7 +1,6 @@
 
 # Mevcut güvenlik yapısı temel seviyededir. 
 # Verileri daha profesyonel yöntemlerle korumayı öğrendikçe bu modül güncellenecektir.
-#Kendime not : kesin güncelle A101 bile daha fazla bilgi istedi üye olmak için 
 
 import sqlite3
 import bcrypt
